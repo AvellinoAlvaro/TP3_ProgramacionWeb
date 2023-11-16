@@ -30,6 +30,9 @@ GET {{API_DEPARTAMENTOS}}/d00999
 GET {{API_DEPARTAMENTOS}}/d009/manager
 
 
+### Obtener managers de un departamento
+GET {{API_DEPARTAMENTOS}}/d009/listado-managers
+
 ### Agregar un departamento
 POST {{API_DEPARTAMENTOS}}
 Content-Type: application/json

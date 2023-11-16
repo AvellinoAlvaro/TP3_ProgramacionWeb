@@ -37,6 +37,13 @@ router.get('/:id/manager',checkDepto,async (req,res)=>{
     res.status(200).json(manager)
 });
 
+// GET /api/v1/departamentos/:id/listado-managers
+router.get('/:id/listado-managers', checkDepto, async (req, res) => {
+    const lista = await DB.Departmens.getManagers(res.locals.depto);
+    res.status(200).json(lista)
+});
+
+
 // POST /api/v1/departamentos
 router.post('/',async (req,res)=>{
     const {dept_no,dept_name} =req.body

@@ -62,6 +62,31 @@ WHERE dm.dept_no = ? AND dm.to_date='9999-01-01'
 };
 
 /**
+ * Retorna los managers de un departamento
+ * @param {Object} departamento 
+ * @returns 
+ */
+module.exports.getManagers = async function (departamento) {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    const SQL=`
+SELECT 
+  e.emp_no, e.first_name, e.last_name ,dm.dept_no,dm.from_date,dm.to_date
+FROM dept_manager dm
+	INNER JOIN employees e ON (e.emp_no = dm.emp_no)
+WHERE dm.dept_no = ?
+`;
+    const rows = await conn.query(SQL,[departamento.dept_no]);
+    return rows;
+  } catch (err) {
+    return Promise.reject(err);
+  } finally {
+    if (conn) await conn.release();
+  }
+};
+
+/**
  * Agrega un departamento
  * @param {Object} departamento 
  * @returns 

@@ -35,6 +35,29 @@ describe("Rest API Departamentos", () => {
     expect(manager.first_name).toBe("Yuchang");
   });
 
+  it("GET /api/v1/departamentos/d009/listado-managers", async () => {
+    const response = await request(app).get("/api/v1/departamentos/d009/listado-managers");
+    
+    // Comprobar que la respuesta es válida
+    expect(response).toBeDefined();
+    expect(response.statusCode).toBe(200);
+
+    const lista = response.body;
+
+    // Comprobar que la lista es un arreglo
+    expect(Array.isArray(lista)).toBe(true);
+
+    // Comprobar que la lista tiene más de un elemento
+    expect(lista.length).toBeGreaterThan(0);
+
+    // Comprobar que cada elemento de la lista pertenece al departamento d009
+    lista.forEach(item => {
+      expect(item.dept_no).toBeDefined();
+      expect(item.dept_no).toBe("d009");
+    });
+  });
+
+
   it("GET /api/v1/departamentos/d00999", async () => {
     const response = await request(app).get("/api/v1/departamentos/d00999");
     expect(response).toBeDefined();
