@@ -47,4 +47,12 @@ router.put("/update-salary/:id", checkEmployee, async (req, res) => {
   }
 });
 
+router.put("/change-department/:id", checkEmployee, async (req,res) => {
+    try {
+        const newDepartment = req.body.newDepartment
+    } catch (exception) {
+        res.status(500).send(exception.message);
+    }
+});
+
 module.exports = router;
