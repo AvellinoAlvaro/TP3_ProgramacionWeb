@@ -1,3 +1,4 @@
 /node_modules
 src/db/connection.db.js
 .env
+.vscode/launch.json
