@@ -47,9 +47,15 @@ router.put("/update-salary/:id", checkEmployee, async (req, res) => {
   }
 });
 
+//PUT /api/v1/empleados/change-department/:id
 router.put("/change-department/:id", checkEmployee, async (req,res) => {
     try {
-        const newDepartment = req.body.newDepartment
+      let employee = await DB.Employees.getById(req.params.id);
+        const newDepartment = req.body.newDepartment;
+        const success = await DB.Employees.updateEmployeeDeparment(employee,newDepartment);
+      
+
+
     } catch (exception) {
         res.status(500).send(exception.message);
     }

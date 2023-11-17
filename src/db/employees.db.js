@@ -86,3 +86,36 @@ module.exports.updateEmployeeSalary = async function (employee, newSalary) {
     if (conn) await conn.release();
   }
 };
+
+
+/**
+ * Updates an employee's department
+ * @param {} employee
+ * @param number newDepartment
+ * @returns boolean
+ */
+module.exports.updateEmployeeDeparment = async function (employee, newDepartment) {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+    await conn.beginTransaction();
+    const now = new Date().toISOString().split("T")[0];
+    const lastDate = "9999-01-01";
+    let SQL = `UPDATE dept_emp SET to_date=? WHERE to_date='9999-01-01' AND emp_no=?`;
+    //UPDATE dept_emp SET to_date = CURRENT_DATE WHERE emp_no = ? AND to_date = '9999-01-01';
+        let params = [now, lastDate, employee.emp_no];
+    const updateResult = await conn.query(SQL, params);
+
+    SQL = `INSERT INTO dept_emp (emp_no, dept_no, from_date, to_date) VALUES(?,?,?,'9999-01-01')`;
+    //INSERT INTO dept_emp (emp_no, dept_no, from_date, to_date) VALUES (?, ?, CURRENT_DATE, '9999-01-01');
+    params = [employee.emp_no, newDepartment, now, lastDate];
+    const insertResult = await conn.query(SQL, params);
+    conn.commit();
+    return true;
+  } catch (err) {
+    conn.rollback();
+    return Promise.reject(err);
+  } finally {
+    if (conn) await conn.release();
+  }
+};
