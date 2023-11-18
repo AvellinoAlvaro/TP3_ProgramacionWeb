@@ -45,19 +45,9 @@ router.put("/update-salary/:id", checkEmployee, async (req, res) => {
       newSalary
     );
     employee = await DB.Employees.getByIdWithLastSalary(req.params.id);
-    if (success)
-      res
-        .status(200)
-        .json(
-          Response.respondWithSuccess(
-            "Salario modificado correctamente",
-            employee
-          )
-        );
+    if (success) res.status(200).json(employee);
   } catch (exception) {
-    res
-      .status(500)
-      .json(Response.respondWithError(exception.message), employee);
+    res.status(500).json(exception.message);
   }
 });
 
@@ -66,8 +56,7 @@ router.put("/change-department/:id", checkEmployee, async (req, res) => {
   try {
     let employee = await DB.Employees.getById(req.params.id);
     const newDepartment = DB.Departmens.getById(req.body.newDepartment);
-    if (!newDepartment)
-      res.status(404).send("Departamento no encontrado!!!");
+    if (!newDepartment) res.status(404).send("Departamento no encontrado!!!");
     const success = await DB.Employees.updateEmployeeDeparment(
       employee,
       newDepartment

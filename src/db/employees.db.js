@@ -81,7 +81,7 @@ module.exports.updateEmployeeSalary = async function (employee, newSalary) {
     return true;
   } catch (err) {
     conn.rollback();
-    throw Promise.reject(err);
+    return Promise.reject(err);
   } finally {
     if (conn) await conn.release();
   }
