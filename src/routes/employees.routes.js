@@ -47,7 +47,7 @@ router.put("/update-salary/:id", checkEmployee, async (req, res) => {
     employee = await DB.Employees.getByIdWithLastSalary(req.params.id);
     if (success) res.status(200).json(employee);
   } catch (exception) {
-    res.status(500).json(exception.message);
+    res.status(500).json({ message: exception.message });
   }
 });
 
