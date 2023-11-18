@@ -164,3 +164,46 @@ describe("Rest API Departamentos", () => {
     expect(responseDelete.statusCode).toBe(204);
   });
 });
+
+
+
+
+
+describe('Pruebas para mover un empleado a otro departamento', () => {
+  // 1. Comprobar que exista el empleado.
+  it('Debería obtener un error si se proporciona un emp_no no válido', async () => {
+    const response = await request(app).post('/api/v1/mover-empleado')
+      .send({ emp_no: 'invalid_emp_no', dept_no_destino: 'nuevo_dept_no' }); // Reemplazar con un emp_no inválido y dept_no válido
+    expect(response).toBeDefined();
+    expect(response.statusCode).toBe(400); // Código de estado para datos incorrectos
+    expect(response.text).toBe('Empleado no encontrado'); // Mensaje de error esperado
+  });
+
+  // 2. Comprobar que exista el departamento destino.
+  it('Debería obtener un error si se proporciona un dept_no destino no válido', async () => {
+    const response = await request(app).post('/api/v1/mover-empleado')
+      .send({ emp_no: '10010', dept_no_destino: 'invalid_dept_no' }); // Reemplazar con un dept_no inválido y emp_no válido
+    expect(response).toBeDefined();
+    expect(response.statusCode).toBe(400); // Código de estado para datos incorrectos
+    expect(response.text).toBe('Departamento destino no encontrado'); // Mensaje de error esperado
+  });
+
+  // 3. Comprobar que el departamento destino sea distinto al departamento actual del empleado.
+  it('Debería obtener un error si el dept_no destino es igual al dept_no actual del empleado', async () => {
+    const response = await request(app).post('/api/v1/mover-empleado')
+      .send({ emp_no: '10010', dept_no_destino: 'd009' }); // Reemplazar con un dept_no igual al actual del empleado
+    expect(response).toBeDefined();
+    expect(response.statusCode).toBe(400); // Código de estado para datos incorrectos
+    expect(response.text).toBe('El departamento destino es igual al departamento actual del empleado'); // Mensaje de error esperado
+  });
+
+  // 4. Comprobar que los códigos de estado del protocolo HTTP en las respuestas sean correctos.
+  it('Debería devolver el código de estado 200 si se realiza el movimiento correctamente', async () => {
+    const response = await request(app).post('/api/v1/mover-empleado')
+      .send({ emp_no: '10010', dept_no_destino: 'd006' }); // Reemplazar con un dept_no diferente al actual del empleado
+    expect(response).toBeDefined();
+    expect(response.statusCode).toBe(200); // Código de estado exitoso
+  });
+
+});
+
