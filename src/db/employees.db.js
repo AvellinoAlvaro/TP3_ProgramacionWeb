@@ -125,7 +125,7 @@ module.exports.updateEmployeeDeparment = async function (
     // Si no existe registro con esas claves inserto uno nuevo
     else {
       SQL = `INSERT INTO dept_emp (emp_no, dept_no, from_date, to_date) VALUES(?,?,?,?)`;
-      params = [employee.emp_no, newDepartment, now, lastDate];
+      params = [employee.emp_no, newDepartment.dept_no, now, lastDate];
       updateDeptEmpResult = await conn.query(SQL, params);
     }
     if (updateResult && updateDeptEmpResult) conn.commit();
