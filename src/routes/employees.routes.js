@@ -36,6 +36,10 @@ router.put("/update-salary/:id", checkEmployee, async (req, res) => {
   try {
     let employee = await DB.Employees.getById(req.params.id);
     const newSalary = req.body.newSalary;
+    if (newSalary <= 0 || Number.isNaN(newSalary))
+      res
+        .status(403)
+        .send("El nuevo salario debe ser un numero mayor o igual que cero");
     const success = await DB.Employees.updateEmployeeSalary(
       employee,
       newSalary
@@ -61,7 +65,9 @@ router.put("/update-salary/:id", checkEmployee, async (req, res) => {
 router.put("/change-department/:id", checkEmployee, async (req, res) => {
   try {
     let employee = await DB.Employees.getById(req.params.id);
-    const newDepartment = req.body.newDepartment;
+    const newDepartment = DB.Departmens.getById(req.body.newDepartment);
+    if (!newDepartment)
+      res.status(404).send("Departamento no encontrado!!!");
     const success = await DB.Employees.updateEmployeeDeparment(
       employee,
       newDepartment

@@ -12,7 +12,7 @@ const DB = require('../db');
 async function checkDepto(req,res,next){
     const depto = await DB.Departmens.getById(req.params.id);
     if(!depto){        
-        return res.status(404).send('Salario no encontrado!!!')
+        return res.status(404).send('Departamento no encontrado!!!')
     }
     // se guarda el objeto encontrado en la propiedad locals
     // para que pueda ser usado en los siguientes eslabones de la cadena
