@@ -30,7 +30,7 @@ router.get("/:id", checkSalary, async (req, res) => {
   res.status(200).json(historial);
 });
 
-router.put("/update-salary/:empId", async(req, res) => {
+/* router.put("/update-salary/:empId", async(req, res) => {
     const emp_no = req.params.empId;
     const {dept_no} =req.body
     if(!dept_no){
@@ -38,5 +38,5 @@ router.put("/update-salary/:empId", async(req, res) => {
         return
     }
     
-});
+}); */
 module.exports = router;

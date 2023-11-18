@@ -41,24 +41,35 @@ router.put("/update-salary/:id", checkEmployee, async (req, res) => {
       newSalary
     );
     employee = await DB.Employees.getByIdWithLastSalary(req.params.id);
-    if (success) res.status(200).json(employee);
+    if (success)
+      res
+        .status(200)
+        .json(
+          Response.respondWithSuccess(
+            "Salario modificado correctamente",
+            employee
+          )
+        );
   } catch (exception) {
-    res.status(500).send(exception.message);
+    res
+      .status(500)
+      .json(Response.respondWithError(exception.message), employee);
   }
 });
 
 //PUT /api/v1/empleados/change-department/:id
-router.put("/change-department/:id", checkEmployee, async (req,res) => {
-    try {
-      let employee = await DB.Employees.getById(req.params.id);
-        const newDepartment = req.body.newDepartment;
-        const success = await DB.Employees.updateEmployeeDeparment(employee,newDepartment);
-      
-
-
-    } catch (exception) {
-        res.status(500).send(exception.message);
-    }
+router.put("/change-department/:id", checkEmployee, async (req, res) => {
+  try {
+    let employee = await DB.Employees.getById(req.params.id);
+    const newDepartment = req.body.newDepartment;
+    const success = await DB.Employees.updateEmployeeDeparment(
+      employee,
+      newDepartment
+    );
+    if (success) res.status(200).json(employee);
+  } catch (exception) {
+    res.status(500).json({ message: exception.message });
+  }
 });
 
 module.exports = router;
