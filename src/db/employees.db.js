@@ -109,7 +109,7 @@ module.exports.updateEmployeeDeparment = async function (
 
     // Consulta para validar si el empleado ya trabajo en el nuevo departamento previamente
     SQL = `SELECT COUNT (*) as count FROM dept_emp WHERE emp_no=? AND dept_no=?`;
-    let exists = await conn.query(SQL, [employee.emp_no, newDepartment]);
+    let exists = await conn.query(SQL, [employee.emp_no, newDepartment.dept_no]);
     exists = exists[0].count;
     // Si trabajo previamente en el nuevo depto, modifica las fechas del registro existente
     let updateDeptEmpResult = undefined;
@@ -119,7 +119,7 @@ module.exports.updateEmployeeDeparment = async function (
         now,
         lastDate,
         employee.emp_no,
-        newDepartment,
+        newDepartment.dept_no,
       ]);
     }
     // Si no existe registro con esas claves inserto uno nuevo
